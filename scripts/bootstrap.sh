@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="https://github.com/yukioe/arch.git"
+REPO="git@github.com:YukioE/arch.git"
 DIR="$HOME/arch-setup"
 
 # 1. Enable multilib repo if not enabled
