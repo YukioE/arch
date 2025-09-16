@@ -6,7 +6,9 @@ DIR="$HOME/arch-setup"
 cd "$DIR"
 
 # update package list (yay covers repo + AUR)
-yay -Qq > packages/list
+yay -Qqe > packages/list
+
+git pull --rebase
 
 # commit changes with custom message
 MSG="${1:-Update packages & dotfiles on $(hostname)}"
