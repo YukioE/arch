@@ -1,0 +1,9 @@
+[user]
+	name = YukioE
+	email = 93155932+YukioE@users.noreply.github.com
+[core]
+	editor = nvim
+[pull]
+	rebase = true
+[color]
+	ui = auto

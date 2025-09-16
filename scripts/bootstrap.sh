@@ -49,9 +49,15 @@ fi
 if [ -d "dotfiles" ]; then
   echo "[*] Stowing dotfiles..."
   cd dotfiles
+
   for dir in */; do
-    stow --target="$HOME" "$dir"
+    if [ -d "$dir" ]; then
+      echo "   -> Stowing $dir"
+      stow --target="$HOME" "$dir"
+    fi
   done
+
+  cd ..
 fi
 
 echo "[✓] Bootstrap complete!"
