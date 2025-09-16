@@ -25,6 +25,8 @@ fi
 
 cd "$DIR"
 
+mkdir -p "$DIR/packages" "$DIR/dotfiles"
+
 # 4. Install yay-bin if not installed
 if ! command -v yay &>/dev/null; then
   echo "[*] Installing yay-bin..."
