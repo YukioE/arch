@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="git@github.com:YukioE/arch.git"
+REPO_SSH="git@github.com:yukioe/arch.git"
+REPO_HTTPS="https://github.com/yukioe/arch.git"
 DIR="$HOME/arch-setup"
 
 # 1. Enable multilib repo if not enabled
@@ -18,9 +19,12 @@ sudo rankmirrors -n 5 /etc/pacman.d/mirrorlist > /tmp/mirrorlist
 sudo mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 sudo pacman -Syyu --noconfirm
 
-# 3. Clone your repo if not exists
-if [ ! -d "$DIR" ]; then
-  git clone "$REPO" "$DIR"
+# clone repo if not exists
+if git ls-remote "${REPO_SSH}" &>/dev/null; then
+    git clone "${REPO_SSH}" "$DIR"
+else
+    echo "[*] SSH failed, falling back to HTTPS..."
+    git clone "${REPO_HTTPS}" "$DIR"
 fi
 
 cd "$DIR"
