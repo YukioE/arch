@@ -19,12 +19,18 @@ sudo rankmirrors -n 5 /etc/pacman.d/mirrorlist > /tmp/mirrorlist
 sudo mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 sudo pacman -Syyu --noconfirm
 
-# clone repo if not exists
-if git ls-remote "${REPO_SSH}" &>/dev/null; then
-    git clone "${REPO_SSH}" "$DIR"
+# 3. Clone repo if not already cloned
+if [ ! -d "$DIR/.git" ]; then
+    echo "[*] Cloning setup repo..."
+    if git ls-remote "${REPO_SSH}" &>/dev/null; then
+        git clone "${REPO_SSH}" "$DIR"
+    else
+        echo "[*] SSH failed, falling back to HTTPS..."
+        git clone "${REPO_HTTPS}" "$DIR"
+    fi
 else
-    echo "[*] SSH failed, falling back to HTTPS..."
-    git clone "${REPO_HTTPS}" "$DIR"
+    echo "[*] Repo already exists at $DIR, pulling latest changes..."
+    git -C "$DIR" pull --rebase
 fi
 
 cd "$DIR"
@@ -57,7 +63,7 @@ if [ -d "dotfiles" ]; then
   for dir in */; do
     if [ -d "$dir" ]; then
       echo "   -> Stowing $dir"
-      stow --target="$HOME" "$dir"
+      stow --target="$HOME" --restow "$dir"
     fi
   done
 
