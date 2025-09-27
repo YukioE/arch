@@ -29,8 +29,19 @@ if [ ! -d "$DIR/.git" ]; then
         git clone "${REPO_HTTPS}" "$DIR"
     fi
 else
-    echo "[*] Repo already exists at $DIR, pulling latest changes..."
-    git -C "$DIR" pull --rebase
+    echo "[*] Repo already exists at $DIR"
+    cd "$DIR"
+
+    if git diff --quiet && git diff --cached --quiet; then
+      echo "[*] No local changes, pulling latest changes..."
+      git pull --rebase
+    else
+      echo "[*] Local changes detected, stashing before pull..."
+      git stash push -u -m "autostash-before-rebase"
+      git pull --rebase
+      echo "[*] Applying stashed changes back..."
+      git stash pop || echo "[!] Conflicts may have occurred during stash pop."
+    fi
 fi
 
 cd "$DIR"
