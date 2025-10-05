@@ -1,51 +1,46 @@
 {
     "layer": "top",
     "position": "top",
+    "height": 0,
     "mode": "dock",
     "exclusive": true,
     "passthrough": false,
-    "gtk-layer-shell": true,
-    "height": 0,
+    "reload_style_on_change": true,
     "modules-left": [
-        "clock",
+        "custom/icon",
         "hyprland/workspaces"
     ],
-    "modules-center": ["hyprland/window"],
+    "modules-center": [
+        "clock",
+        "custom/spotify"
+    ],
     "modules-right": [
         "tray",
-        "memory",
-        "cpu",
-        "network",
-        "battery",
-        "backlight",
         "pulseaudio",
-        "pulseaudio#microphone"
+        "bluetooth",
+        "battery",
+        "network",
+        "hyprland/language",
+        "cpu",
+        "group/power"
     ],
-
-    "hyprland/window": {
-        "format": "󰣇 {}"
+    "custom/icon": {
+        "format": "󰣇",
+        "on-click": "rofi -show drun"
     },
-    
     "hyprland/workspaces": {
         "disable-scroll": true,
-        "all-outputs": true,
-        "on-click": "activate"
-        //"format": "{icon}",
+        "on-click": "activate",
+        "format": "{id}"
     },
-
-    "tray": {
-        "icon-size": 13,
-        "spacing": 10
-    },
-
     "clock": {
-        "format": "{:%A    %B-%d-%Y    %I:%M:%S %p}",
+        "format": "{  %F    %H:%M}",
         "interval": 1,
         "rotate": 0,
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "mode": "month",
-            "mode-mon-col": 3,
+            "mode-mon-col": 4,
             "on-scroll": 1,
             "on-click-right": "mode",
             "format": {
@@ -56,36 +51,30 @@
             }
         }
     },
-
-    "backlight": {
-        "device": "intel_backlight",
-        "format": "{icon} {percent}%",
-        "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "on-scroll-up": "brightnessctl set 1%+",
-        "on-scroll-down": "brightnessctl set 1%-",
-        "min-length": 6
+    "custom/spotify": {
+        "format": "{icon} {}",
+        "escape": true,
+        "return-type": "json",
+        "max-length": 40,
+        "interval": 30,
+        "on-click": "playerctl -p spotify play-pause",
+        "on-click-right": "killall spotify",
+        "smooth-scrolling-threshold": 10,
+        "on-scroll-up": "playerctl -p spotify next",
+        "on-scroll-down": "playerctl -p spotify previous",
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null",
+        "exec-if": "pgrep spotify"
     },
-
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 20
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{time} {icon}",
-        "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    "tray": {
+        "icon-size": 13,
+        "spacing": 10
     },
-
     "pulseaudio": {
         "format": "{icon}  {volume}%",
         "tooltip": false,
-        "format-muted": "  Muted",
-        "on-click": "pamixer -t",
-        "on-scroll-up": "pamixer -i 1",
-        "on-scroll-down": "pamixer -d 1",
+        "format-muted": " ",
+        "on-click": "pavucontrol -t 3",
+        "on-click-right": "pavucontrol -t 2",
         "scroll-step": 5,
         "format-icons": {
             "headphone": "",
@@ -94,44 +83,49 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["","", "", ""]
+            "default": [
+                "",
+                "",
+                "",
+                ""
+            ]
         }
     },
-
-    "pulseaudio#microphone": {
-        "format": "{format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": "  Muted",
-        "on-click": "pamixer --default-source -t",
-        "on-scroll-up": "pamixer --default-source -i 5",
-        "on-scroll-down": "pamixer --default-source -d 5",
-        "scroll-step": 5
+    "bluetooth": {
+        // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
+        "format": " {status}",
+        "format-disabled": "",
+        "format-connected": " {num_connections} connected",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
     },
-
-    "memory": {
+    "battery": {
         "states": {
-            "c": 90, // critical
-            "h": 60, // high
-            "m": 30 // medium
+            "good": 95,
+            "warning": 30,
+            "critical": 20
         },
-        "interval": 10,
-        "format": "󰾆 {used}GB",
-        "format-m": "󰾅 {used}GB",
-        "format-h": "󰓅 {used}GB",
-        "format-c": " {used}GB",
-        "format-alt": "󰾆 {percentage}%",
-        "max-length": 10,
         "tooltip": true,
-        "tooltip-format": "󰾆 {percentage}%\n {used:0.1f}GB/{total:0.1f}GB"
+        "tooltip-format": "{power}W",
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": [
+            "󰂃",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
     },
-
-    "cpu": {
-        "interval": 10,
-        "format": "󰍛 {usage}%",
-        "format-alt": "{icon0}{icon1}{icon2}{icon3}",
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
-    },
-
     "network": {
         "tooltip": true,
         "format-wifi": "  {essid}",
@@ -140,7 +134,49 @@
         "format-linked": "󰈀 {ifname} (No IP)",
         "format-disconnected": "󰖪 ",
         "tooltip-format-disconnected": "Disconnected",
-        "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
+        "on-click": "nm-connection-editor",
         "interval": 2
+    },
+    "hyprland/language": {
+        "format": "󰌨 {}"
+    },
+    "cpu": {
+        "interval": 10,
+        "format": "󰍛 {usage}%",
+        "on-click": "kitty -e btop"
+    },
+    "group/power": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 250,
+            "children-class": "not-power",
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/power",
+            "custom/reboot",
+            "custom/lock",
+            "custom/sleep"
+        ]
+    },
+    "custom/lock": {
+        "format": "󰍁",
+        "tooltip": false,
+        "on-click": "hyprlock"
+    },
+    "custom/sleep": {
+        "format": "󰤄",
+        "tooltip": false,
+        "on-click": "systemctl suspend"
+    },
+    "custom/reboot": {
+        "format": "󰜉",
+        "tooltip": false,
+        "on-click": "systemctl reboot"
+    },
+    "custom/power": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "systemctl poweroff"
     }
 }
