@@ -61,6 +61,8 @@ change_wallpaper() {
     if command -v wal &> /dev/null; then
         wal -i "$wallpaper" -n
         pywalfox update
+        spicetify config current_theme pywal
+        spicetify apply
     fi
 }
 
