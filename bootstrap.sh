@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_SSH="git@github.com:yukioe/arch.git"
-REPO_HTTPS="https://github.com/yukioe/arch.git"
-DIR="$HOME/arch-setup"
-
 # 1. Enable multilib repo if not enabled
 if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
   echo "[*] Enabling multilib repository..."
@@ -19,35 +15,6 @@ sudo rankmirrors -n 5 /etc/pacman.d/mirrorlist > /tmp/mirrorlist
 sudo mv /tmp/mirrorlist /etc/pacman.d/mirrorlist
 sudo pacman -Syyu --noconfirm
 
-# 3. Clone repo if not already cloned
-if [ ! -d "$DIR/.git" ]; then
-    echo "[*] Cloning setup repo..."
-    if git ls-remote "${REPO_SSH}" &>/dev/null; then
-        git clone "${REPO_SSH}" "$DIR"
-    else
-        echo "[*] SSH failed, falling back to HTTPS..."
-        git clone "${REPO_HTTPS}" "$DIR"
-    fi
-else
-    echo "[*] Repo already exists at $DIR"
-    cd "$DIR"
-
-    if git diff --quiet && git diff --cached --quiet; then
-      echo "[*] No local changes, pulling latest changes..."
-      git pull --rebase
-    else
-      echo "[*] Local changes detected, stashing before pull..."
-      git stash push -u -m "autostash-before-rebase"
-      git pull --rebase
-      echo "[*] Applying stashed changes back..."
-      git stash pop || echo "[!] Conflicts may have occurred during stash pop."
-    fi
-fi
-
-cd "$DIR"
-
-mkdir -p "$DIR/packages" "$DIR/dotfiles"
-
 # 4. Install yay-bin if not installed
 if ! command -v yay &>/dev/null; then
   echo "[*] Installing yay-bin..."
@@ -61,9 +28,9 @@ if ! command -v yay &>/dev/null; then
 fi
 
 # 5. Install all packages from list
-if [ -f "packages/list" ]; then
-  echo "[*] Installing packages from packages/list..."
-  yay -S --needed --noconfirm - < packages/list
+if [ -f "packages_list" ]; then
+  echo "[*] Installing packages from packages_list..."
+  yay -S --needed --noconfirm - < packages_list
 fi
 
 # 6. Stow dotfiles
@@ -74,6 +41,7 @@ if [ -d "dotfiles" ]; then
   for dir in */; do
     if [ -d "$dir" ]; then
       echo "   -> Stowing $dir"
+      stow --delete "$dir"
       stow --target="$HOME" --restow "$dir"
     fi
   done
