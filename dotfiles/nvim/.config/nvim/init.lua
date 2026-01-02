@@ -17,6 +17,6 @@ require("plugins.lualine")
 require("plugins.gitsigns")
 require("plugins.pywal")
 
-vim.cmd("cd ~")
+-- vim.cmd("cd ~")
 
 --vim.pack.update()
