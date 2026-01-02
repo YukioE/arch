@@ -24,7 +24,7 @@ neovim-nightly-bin
 nodejs
 obsidian
 pipewire
-polkit-kde-agent
+hyprpolkitagent
 qt5-wayland
 qt6-wayland
 rclone
@@ -39,7 +39,7 @@ tailscale
 teamspeak3
 timeshift
 tree
-via
+via-bin
 vlc
 vscodium-bin
 waybar
