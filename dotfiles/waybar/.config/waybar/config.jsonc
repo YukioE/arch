@@ -150,15 +150,15 @@
     "group/power": {
         "orientation": "inherit",
         "drawer": {
-            "transition-duration": 250,
+            "transition-duration": 100,
             "children-class": "not-power",
             "transition-left-to-right": false
         },
         "modules": [
             "custom/power",
-            "custom/reboot",
             "custom/lock",
-            "custom/sleep"
+            "custom/sleep",
+            "custom/reboot",
         ]
     },
     "custom/lock": {
