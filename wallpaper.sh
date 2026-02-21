@@ -61,6 +61,7 @@ change_wallpaper() {
     if command -v wal &> /dev/null; then
         wal -i "$wallpaper" -n
         pywalfox update
+        ln -s $HOME/.cache/wal/colors-discord.css $HOME/.config/vesktop/themes/pywal-vencord.theme.css
         spicetify config current_theme pywal
         spicetify apply
     fi
