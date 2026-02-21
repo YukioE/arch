@@ -26,7 +26,6 @@
     ],
     "custom/icon": {
         "format": "󰣇",
-        "on-click": "rofi -show drun"
     },
     "hyprland/workspaces": {
         "disable-scroll": true,
@@ -174,11 +173,11 @@
     "custom/reboot": {
         "format": "󰜉",
         "tooltip": false,
-        "on-click": "systemctl reboot"
+        "on-click": "hyprshutdown -t 'Restarting...' --post-cmd 'systemctl reboot'"
     },
     "custom/power": {
         "format": "",
         "tooltip": false,
-        "on-click": "systemctl poweroff"
+        "on-click": "hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'"
     }
 }
