@@ -36,21 +36,19 @@ change_wallpaper() {
     if command -v awww &> /dev/null; then
         if [[ "$wallpaper" == *.gif ]]; then
             awww img "$wallpaper" \
-                --transition-type grow \
-                --transition-angle 30 \
-                --transition-step 90 \
-                --transition-duration 2 \
+                --transition-type simple \
+                --transition-step 100 \
+                --transition-duration 1 \
                 --transition-fps 60 \
-                --transition-bezier .65,.05,.36,1 \
+                --transition-bezier 0,1,0,1 \
                 --gif
         else
             awww img "$wallpaper" \
-                --transition-type grow \
-                --transition-angle 30 \
-                --transition-step 90 \
-                --transition-duration 2 \
+                --transition-type simple \
+                --transition-step 100 \
+                --transition-duration 1 \
                 --transition-fps 60 \
-                --transition-bezier .65,.05,.36,1
+                --transition-bezier 0,1,0,1
         fi
     else
         echo "Error: awww not found. Please install awww."
