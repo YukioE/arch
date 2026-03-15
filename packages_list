@@ -46,7 +46,7 @@ waybar
 wget
 xdg-desktop-portal-hyprland
 yazi
-awww
+awww-bin
 pywal16
 easyroam
 firefox-ublock-origin
@@ -61,3 +61,4 @@ zsh
 blueman
 imv
 hyprshutdown
+noto-fonts-emoji

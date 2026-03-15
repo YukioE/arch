@@ -1,6 +1,8 @@
 @import '/home/yukio/.cache/wal/colors-waybar.css';
 
 * {
+    /* all: unset; */
+    border-radius: 0px;
     font-family: JetBrainsMono Nerd Font;
     font-size: 15px;
     padding: 1px;
@@ -32,4 +34,8 @@
 
 .modules-right *:not(#tray) {
     padding-right: 0.4em;
+}
+
+tooltip {
+    background-color: @background;
 }

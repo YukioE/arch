@@ -30,7 +30,9 @@ local pickers = require("telescope.builtin")
 local map = vim.keymap.set
 
 map("n", "<leader>ss", pickers.builtin, { desc = "telescope" })
-map("n", "<leader>sf", pickers.find_files, { desc = "files" })
+map("n", "<leader>sf", function()
+  pickers.find_files({ hidden = true, no_ignore = true })
+end, { desc = "files (all)" })
 map("n", "<leader>sg", pickers.live_grep, { desc = "grep" })
 map("n", "<leader>sn", function()
     pickers.find_files { cwd = vim.fn.stdpath 'config' }
